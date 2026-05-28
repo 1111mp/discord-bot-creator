@@ -1,0 +1,11 @@
+{
+  "name": "Bot Console Log",
+  "description": "command description",
+  "type": 0,
+  "actions": [
+    {
+      "name": "Send Message To Console",
+      "message": "test message sent to the bot console."
+    }
+  ]
+}
