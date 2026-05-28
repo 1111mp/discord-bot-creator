@@ -1,4 +1,4 @@
-import { iProject } from '../core/project';
+import { iProject } from '../data/project';
 
 export const projectService: IProjectService = {
   // create project

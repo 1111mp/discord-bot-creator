@@ -1,7 +1,7 @@
 import { ensureDir, pathExists } from 'fs-extra';
 
-import { DEFAULT_DBC_CONFIG } from './core/dbc';
-import { DEFAULT_PROJECTS_DATA } from './core/project';
+import { DEFAULT_DBC_CONFIG } from './data/dbc';
+import { DEFAULT_PROJECTS_DATA } from './data/project';
 import { appHomeDir, dbcConfigPath, projectsPath } from './lib/dirs';
 import { save_yaml } from './lib/helper';
 

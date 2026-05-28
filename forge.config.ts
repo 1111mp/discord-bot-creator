@@ -1,15 +1,51 @@
-import type { ForgeConfig } from '@electron-forge/shared-types';
-import { MakerSquirrel } from '@electron-forge/maker-squirrel';
-import { MakerZIP } from '@electron-forge/maker-zip';
 import { MakerDeb } from '@electron-forge/maker-deb';
 import { MakerRpm } from '@electron-forge/maker-rpm';
-import { VitePlugin } from '@electron-forge/plugin-vite';
+import { MakerSquirrel } from '@electron-forge/maker-squirrel';
+import { MakerZIP } from '@electron-forge/maker-zip';
 import { FusesPlugin } from '@electron-forge/plugin-fuses';
+import { VitePlugin } from '@electron-forge/plugin-vite';
+import type { ForgeConfig } from '@electron-forge/shared-types';
 import { FuseV1Options, FuseVersion } from '@electron/fuses';
+
+const getExtraResources = () => {
+  const resources = ['./resources/bot-template'];
+
+  const platform = process.platform; // win32, darwin, linux
+  const arch = process.arch;
+  // Windows
+  if (platform === 'win32') {
+    if (arch === 'x64') {
+      resources.push('./resources/bin/win-x64');
+    } else if (arch === 'arm64') {
+      resources.push('./resources/bin/win-arm64');
+    }
+  }
+  // macOS
+  if (platform === 'darwin') {
+    if (arch === 'arm64') {
+      resources.push('./resources/bin/darwin-arm64');
+    } else if (arch === 'x64') {
+      resources.push('./resources/bin/darwin-x64');
+    }
+  }
+  // Linux
+  if (platform === 'linux') {
+    if (arch === 'x64') {
+      resources.push('./resources/bin/linux-x64');
+    } else if (arch === 'arm64') {
+      resources.push('./resources/bin/linux-arm64');
+    }
+  }
+
+  return resources;
+};
+
+console.log(getExtraResources());
 
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
+    extraResource: getExtraResources(),
   },
   rebuildConfig: {},
   makers: [
