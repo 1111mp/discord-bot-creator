@@ -2,7 +2,7 @@ import { app, BrowserWindow, nativeTheme } from 'electron';
 import started from 'electron-squirrel-startup';
 import path from 'node:path';
 
-import { init_config } from './init';
+import { init_app } from './init';
 import { registerIpcServices } from './services';
 
 const isDebug =
@@ -50,7 +50,7 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after app had been ready.
 void app.whenReady().then(async () => {
-  await init_config();
+  await init_app();
 
   registerIpcServices();
 

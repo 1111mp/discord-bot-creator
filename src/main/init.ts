@@ -1,33 +1,43 @@
 import { ensureDir, pathExists } from 'fs-extra';
 
 import { DEFAULT_DBC_CONFIG } from './data/dbc';
-import { DEFAULT_PROJECTS_DATA } from './data/project';
+import { DEFAULT_PROJECTS_DATA, iProject } from './data/project';
 import { appHomeDir, dbcConfigPath, projectsPath } from './lib/dirs';
 import { save_yaml } from './lib/helper';
 
-export async function init_config() {
+async function init_config() {
   try {
-    const homeDir = appHomeDir();
-    await ensureDir(homeDir);
+    await ensureDir(appHomeDir());
 
-    const dbcPath = dbcConfigPath();
-    if (!(await pathExists(dbcPath))) {
-      await save_yaml(
-        dbcPath,
-        DEFAULT_DBC_CONFIG,
-        '# Discord Bot Creator Config File',
-      );
-    }
-
-    const proPath = projectsPath();
-    if (!(await pathExists(proPath))) {
-      await save_yaml(
-        proPath,
-        DEFAULT_PROJECTS_DATA,
-        '# Discord Bot Creator Projects Config File',
-      );
-    }
+    const tasks = [
+      {
+        path: dbcConfigPath(),
+        data: DEFAULT_DBC_CONFIG,
+        comment: '# Discord Bot Creator Config File',
+      },
+      {
+        path: projectsPath(),
+        data: DEFAULT_PROJECTS_DATA,
+        comment: '# Discord Bot Creator Projects Config File',
+      },
+    ];
+    await Promise.all(
+      tasks.map(async ({ path, data, comment }) => {
+        if (!(await pathExists(path))) {
+          await save_yaml(path, data, comment);
+        }
+      }),
+    );
   } catch {
     // log
   }
+}
+
+async function init_data() {
+  await iProject.load();
+}
+
+export async function init_app() {
+  await init_config();
+  await init_data();
 }

@@ -1,9 +1,10 @@
-import { existsSync } from 'node:fs';
+import { copy, pathExists, readJson, writeJson } from 'fs-extra';
 import { readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { parse, stringify } from 'yaml';
 
 export async function read_yaml<T>(path: string): Promise<T> {
-  if (!existsSync(path)) {
+  if (!(await pathExists(path))) {
     throw new Error(`file not found "${path}"`);
   }
 
@@ -28,4 +29,30 @@ export async function save_yaml<T>(
   } catch {
     throw new Error(`failed to save file "${path}"`);
   }
+}
+
+interface CreateProjectOptions {
+  templatePath: string;
+  path: string;
+  name: string;
+  description?: string;
+}
+
+export async function createBotProject({
+  templatePath,
+  path,
+  name,
+  description,
+}: CreateProjectOptions): Promise<void> {
+  await copy(templatePath, path, {
+    overwrite: true,
+  });
+
+  const pkgPath = join(path, 'package.json');
+  const pkg = await readJson(pkgPath, 'utf-8');
+  pkg.name = name;
+  if (description) {
+    pkg.description = description;
+  }
+  await writeJson(pkgPath, pkg, { encoding: 'utf-8', spaces: 2 });
 }

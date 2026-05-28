@@ -2,9 +2,12 @@ import { contextBridge } from 'electron';
 
 import { createIpcProxy } from '../main/services/client';
 
-const { project: projectService } = createIpcProxy();
+const { dialog: dialogService, project: projectService } = createIpcProxy();
 const electronHandler = {
   ipcService: {
+    dialog: {
+      showOpenDialog: dialogService.showOpenDialog,
+    },
     project: {
       create: projectService.create,
       getAll: projectService.getAll,

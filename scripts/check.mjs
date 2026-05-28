@@ -119,10 +119,7 @@ async function extractZipWindows(zipPath, targetDir, expectedSubDir) {
   const extractedRoot = path.join(targetDir, expectedSubDir);
 
   for (const file of fs.readdirSync(extractedRoot)) {
-    fs.renameSync(
-      path.join(extractedRoot, file),
-      path.join(targetDir, file),
-    );
+    fs.renameSync(path.join(extractedRoot, file), path.join(targetDir, file));
   }
 
   fs.rmSync(extractedRoot, {

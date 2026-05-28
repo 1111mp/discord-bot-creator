@@ -10,7 +10,3 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <App />
   </React.StrictMode>,
 );
-
-// window.electron.ipcService.project.getAll().then((projects) => {
-//   console.log('projects', projects);
-// });

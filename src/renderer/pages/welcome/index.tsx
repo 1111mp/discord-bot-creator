@@ -1,12 +1,15 @@
 import {
   BadgeCheckIcon,
   ChevronRightIcon,
+  FolderOpenIcon,
   Info,
   MoonStar,
   Sun,
   SunMoon,
 } from 'lucide-react';
+import { useLoaderData, useNavigate } from 'react-router';
 
+import { ProjectCreator } from '@/components';
 import {
   Button,
   Card,
@@ -36,6 +39,11 @@ import {
 } from '@/components/ui';
 
 function WelcomePage() {
+  const navigate = useNavigate();
+  const { projects = [] } = useLoaderData<{ projects: DBC.IProject[] }>();
+
+  const hasProjects = projects.length > 0;
+
   return (
     <div className='flex flex-1 justify-center items-center'>
       <Button
@@ -50,7 +58,8 @@ function WelcomePage() {
         <CardHeader className='text-center'>
           <CardTitle>Welcome back</CardTitle>
           <CardDescription>
-            Select an existing project or create a new one to get started.
+            Select an existing project or create a new one to start building
+            your Discord bot.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -112,25 +121,39 @@ function WelcomePage() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
-                    <DropdownMenuLabel>My Projects</DropdownMenuLabel>
-                    <DropdownMenuItem className='py-1.5'>
-                      Profile
-                      <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className='py-1.5'>
-                      Billing
-                      <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className='py-1.5'>
-                      Settings
-                      <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
+                    {hasProjects ? (
+                      <>
+                        <DropdownMenuLabel>My Projects</DropdownMenuLabel>
+                        {projects.map(({ id, name }) => (
+                          <DropdownMenuItem
+                            key={id}
+                            className='py-1.5'
+                            onClick={() => {
+                              navigate(`/projects/${id}`);
+                            }}
+                          >
+                            {name}
+                            <DropdownMenuShortcut>
+                              <ChevronRightIcon className='size-4' />
+                            </DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                        ))}
+                      </>
+                    ) : (
+                      <div className='flex flex-col items-center justify-center gap-2 p-6 text-center'>
+                        <FolderOpenIcon className='size-6 text-muted-foreground/50' />
+                        <div className='space-y-1'>
+                          <p className='text-sm font-medium'>No projects yet</p>
+                          <p className='text-muted-foreground text-xs'>
+                            Create your first bot project to get started.
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </DropdownMenuGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button className='w-full' size='xl'>
-                Create Project
-              </Button>
+              <ProjectCreator />
             </Field>
           </FieldGroup>
         </CardContent>
