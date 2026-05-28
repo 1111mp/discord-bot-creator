@@ -148,4 +148,4 @@ out/
 .DS_Store
 
 # Resources
-resources/bin/
+resources/lib/

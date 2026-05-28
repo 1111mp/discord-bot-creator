@@ -31,9 +31,8 @@ async function main() {
     process.exit(1);
   }
 
-  // Define your target output directory: e.g., resources/bin/win-x64
-  const targetDirName = `${nodePlatform === 'win' ? 'win' : nodePlatform}-${nodeArch}`;
-  const targetDir = path.join(PROJECT_ROOT, 'resources', 'bin', targetDirName);
+  // Define your target output directory: e.g., `resources/lib/node`
+  const targetDir = path.join(PROJECT_ROOT, 'resources', 'lib', 'node');
 
   // Determine the expected executable path to check for prior initialization
   const expectedBinaryPath =
@@ -44,7 +43,7 @@ async function main() {
   // Early exit if the environment is already fully set up
   if (fs.existsSync(expectedBinaryPath)) {
     console.log(
-      `✅ Complete Node.js environment for [${targetDirName}] is already initialized. Skipping.`,
+      `✅ Complete Node.js environment for lib node is already initialized. Skipping.`,
     );
     process.exit(0);
   }
@@ -59,7 +58,7 @@ async function main() {
   const tmpDownloadPath = path.join(
     PROJECT_ROOT,
     'resources',
-    'bin',
+    'lib',
     `tmp_${archiveName}`,
   );
 
@@ -67,7 +66,7 @@ async function main() {
   fs.mkdirSync(path.dirname(targetDir), { recursive: true });
 
   console.log(
-    `🚀 Downloading full Node.js package straight into [${targetDirName}]...`,
+    `🚀 Downloading full Node.js package straight into [lib/node]...`,
   );
   console.log(`🔗 URL: ${downloadUrl}`);
 
