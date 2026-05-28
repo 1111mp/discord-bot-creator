@@ -5,22 +5,17 @@ export class Files {
     dbc;
     commandsDir;
     eventsDir;
+    settingsPath;
     data;
-    dirs;
     constructor(dbc) {
         this.dbc = dbc;
         this.commandsDir = path.join(dbc.dir, "data", "commands");
         this.eventsDir = path.join(dbc.dir, "data", "events");
+        this.settingsPath = path.join(dbc.dir, "data", "settings.json");
         this.data = {
             commands: [],
             events: [],
-        };
-        this.dirs = {
-            data: {
-                commands: path.join(dbc.dir, "data", "commands"),
-                events: path.join(dbc.dir, "data", "events"),
-                settings: path.join(dbc.dir, ""),
-            },
+            settings: {},
         };
     }
     async startBot() {
@@ -37,15 +32,15 @@ export class Files {
         }
     }
     async loadData() {
-        await this.initCommandsData();
-        await this.initEventsData();
+        await this.loadCommandsData();
+        await this.loadEventsData();
+        await this.loadSettingsData();
     }
-    async initCommandsData() {
-        const dir = this.dirs.data.commands;
-        const files = await fs.readdir(dir);
+    async loadCommandsData() {
+        const files = await fs.readdir(this.commandsDir);
         for (const file of files) {
             try {
-                const filePath = path.join(dir, file);
+                const filePath = path.join(this.commandsDir, file);
                 const json = await fs.readFile(filePath, "utf8");
                 const data = JSON.parse(json);
                 this.data.commands.push(data);
@@ -55,12 +50,11 @@ export class Files {
             }
         }
     }
-    async initEventsData() {
-        const dir = this.dirs.data.events;
-        const files = await fs.readdir(dir);
+    async loadEventsData() {
+        const files = await fs.readdir(this.eventsDir);
         for (const file of files) {
             try {
-                const filePath = path.join(dir, file);
+                const filePath = path.join(this.eventsDir, file);
                 const json = await fs.readFile(filePath, "utf8");
                 const data = JSON.parse(json);
                 this.data.events.push(data);
@@ -68,6 +62,16 @@ export class Files {
             catch (err) {
                 console.error("Błąd podczas ładowania danych eventu");
             }
+        }
+    }
+    async loadSettingsData() {
+        try {
+            const json = await fs.readFile(this.settingsPath, "utf8");
+            const data = JSON.parse(json);
+            this.data.settings = data;
+        }
+        catch (err) {
+            console.error("Błąd podczas ładowania danych ustawień");
         }
     }
     async initMods() {

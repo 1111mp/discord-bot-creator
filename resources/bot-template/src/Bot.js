@@ -1,4 +1,5 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { CommandType } from "./enums/CommandType.js";
 export class Bot {
     dbc;
     $slash;
@@ -6,6 +7,7 @@ export class Bot {
     $messageContextMenu;
     $text;
     $events;
+    applicationCommandData;
     client;
     PrivilegedIntents;
     NonPrivilegedIntents;
@@ -14,13 +16,15 @@ export class Bot {
     intents;
     partials;
     presence;
+    sweepers;
     constructor(dbc) {
         this.dbc = dbc;
-        this.$slash = [];
-        this.$userContextMenu = [];
-        this.$messageContextMenu = [];
-        this.$text = [];
+        this.$slash = new Map();
+        this.$userContextMenu = new Map();
+        this.$messageContextMenu = new Map();
+        this.$text = new Map();
         this.$events = [];
+        this.applicationCommandData = [];
         this.client = null;
         this.PrivilegedIntents =
             GatewayIntentBits.GuildMembers |
@@ -58,6 +62,9 @@ export class Bot {
         this.presence = () => {
             return {};
         };
+        this.sweepers = () => {
+            return {};
+        };
     }
     init() {
         this.initClient();
@@ -67,16 +74,59 @@ export class Bot {
         options.intents = this.intents();
         options.partials = this.partials();
         options.presence = this.presence();
+        options.sweepers = this.sweepers();
         this.client = new Client(options);
     }
     reformatData() {
         this.reformatCommands();
         this.reformatEvents();
     }
-    reformatCommands() { }
+    reformatCommands() {
+        const commands = this.dbc.files.data.commands;
+        if (!commands)
+            return;
+        for (let i = 0; i < commands.length; i++) {
+            const command = commands[i];
+            if (command) {
+                switch (command.type) {
+                    case CommandType.Slash:
+                        if (this.$slash.has(command.name)) {
+                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                        }
+                        else {
+                            this.$slash.set(command.name, command);
+                        }
+                        break;
+                    case CommandType.UserContextMenu:
+                        if (this.$userContextMenu.has(command.name)) {
+                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                        }
+                        else {
+                            this.$userContextMenu.set(command.name, command);
+                        }
+                        break;
+                    case CommandType.MessageContextMenu:
+                        if (this.$messageContextMenu.has(command.name)) {
+                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                        }
+                        else {
+                            this.$messageContextMenu.set(command.name, command);
+                        }
+                        break;
+                    case CommandType.Text:
+                        if (this.$text.has(command.name)) {
+                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                        }
+                        else {
+                            this.$text.set(command.name, command);
+                        }
+                        break;
+                }
+            }
+        }
+    }
     reformatEvents() {
-        const { files } = this.dbc;
-        const events = files.data.events;
+        const events = this.dbc.files.data.events;
         if (!events)
             return;
         for (let i = 0; i < events.length; i++) {
@@ -85,4 +135,6 @@ export class Bot {
             }
         }
     }
+    createApiJsonFromCommand(command) { }
+    mergeSubCommandIntoCommandData() { }
 }

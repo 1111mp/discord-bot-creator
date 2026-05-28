@@ -4,6 +4,7 @@ import { Actions } from "./Actions.js";
 import { Events } from "./Events.js";
 import { Extensions } from "./Extensions.js";
 import { Files } from "./Files.js";
+import { Audio } from "./Audio.js";
 import pkg from "./../package.json" with { type: "json" };
 import * as DiscordJS from "discord.js";
 export class DBC {
@@ -15,6 +16,7 @@ export class DBC {
     events;
     extensions;
     files;
+    audio;
     constructor() {
         this.dir = path.join(import.meta.dirname, "..");
         this.version = pkg.version;
@@ -24,5 +26,6 @@ export class DBC {
         this.events = new Events(this);
         this.extensions = new Extensions(this);
         this.files = new Files(this);
+        this.audio = new Audio(this);
     }
 }
