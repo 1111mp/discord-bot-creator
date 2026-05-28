@@ -1,22 +1,20 @@
 {
-  "name": "dbc-bot",
-  "description": "",
-  "license": "MIT",
-  "version": "1.0.0",
-  "author": "nxen",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "tsx index.ts",
-    "build": "tsc"
-  },
-  "dependencies": {
-    "discord.js": "^14.26.4"
-  },
-  "devDependencies": {
-    "@types/node": "^25.9.1",
-    "tsx": "^4.22.3",
-    "typescript": "^6.0.3"
-  }
+    "name": "dbc-bot",
+    "description": "",
+    "license": "MIT",
+    "version": "1.0.0",
+    "author": "nxen",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "tsx index.ts",
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "@types/node": "^25.9.1",
+        "discord.js": "^14.26.4",
+        "tsx": "^4.22.3",
+        "typescript": "^6.0.3"
+    }
 }
