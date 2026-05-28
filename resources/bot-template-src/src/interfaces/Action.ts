@@ -1,3 +1,4 @@
+import type { ModName } from "./../types/ModName.js";
 import type { ModMeta } from "./ModMeta.js";
 import type { ModDependencies } from "./../types/ModDependencies.js";
 import type { ActionsCache } from "./../ActionsCache.js";
@@ -7,7 +8,7 @@ export interface Action {
   /**
    * Action Name
    */
-  name: string;
+  name: ModName;
   /**
    * Action Description
    *

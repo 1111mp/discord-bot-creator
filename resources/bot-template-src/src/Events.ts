@@ -15,4 +15,12 @@ export class Events {
     this.dir = path.join(dbc.dir, "mods", "events");
     this.mods = new Map();
   }
+
+  modExists(modName: ModName): boolean {
+    if (this.mods.has(modName)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

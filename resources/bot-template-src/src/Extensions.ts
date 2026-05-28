@@ -16,4 +16,12 @@ export class Extensions {
     this.dir = path.join(dbc.dir, "mods", "extensions");
     this.mods = new Map();
   }
+
+  modExists(modName: ModName): boolean {
+    if (this.mods.has(modName)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

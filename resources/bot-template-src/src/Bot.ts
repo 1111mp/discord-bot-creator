@@ -1,10 +1,12 @@
 import type { DBC } from "./DBC.js";
 import type { CommandData } from "./interfaces/CommandData.js";
+import type { EventData } from "./interfaces/EventData.js";
 import type { Event } from "./interfaces/Event.js";
 import type { PresenceData, SweeperOptions } from "discord.js";
 
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { CommandType } from "./enums/CommandType.js";
+import { ErrorType } from "./enums/ErrorType.js";
 
 export class Bot {
   dbc: DBC;
@@ -12,7 +14,7 @@ export class Bot {
   $userContextMenu: Map<string, CommandData>;
   $messageContextMenu: Map<string, CommandData>;
   $text: Map<string, CommandData>;
-  $events: Event[];
+  $events: Map<string, EventData>;
   // $buttons: Button[];
   // $selectMenus: SelectMenu[];
   applicationCommandData: Object[];
@@ -32,7 +34,7 @@ export class Bot {
     this.$userContextMenu = new Map();
     this.$messageContextMenu = new Map();
     this.$text = new Map();
-    this.$events = [];
+    this.$events = new Map();
     // this.$buttons = [];
     // this.$selectMenus = [];
     this.applicationCommandData = [];
@@ -105,28 +107,37 @@ export class Bot {
         switch (command.type) {
           case CommandType.Slash:
             if (this.$slash.has(command.name)) {
-              console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+              this.dbc.printError(
+                ErrorType.DuplicateSlashCommand,
+                command.name,
+              );
             } else {
               this.$slash.set(command.name, command);
             }
             break;
           case CommandType.UserContextMenu:
             if (this.$userContextMenu.has(command.name)) {
-              console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+              this.dbc.printError(
+                ErrorType.DuplicateUserContextMenuCommand,
+                command.name,
+              );
             } else {
               this.$userContextMenu.set(command.name, command);
             }
             break;
           case CommandType.MessageContextMenu:
             if (this.$messageContextMenu.has(command.name)) {
-              console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+              this.dbc.printError(
+                ErrorType.DuplicateMessageContextMenuCommand,
+                command.name,
+              );
             } else {
               this.$messageContextMenu.set(command.name, command);
             }
             break;
           case CommandType.Text:
             if (this.$text.has(command.name)) {
-              console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+              this.dbc.printError(ErrorType.DuplicateTextCommand, command.name);
             } else {
               this.$text.set(command.name, command);
             }

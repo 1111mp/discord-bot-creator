@@ -1,4 +1,18 @@
 export enum ErrorType {
-  InitCommandDataError,
-  InitEventDataError,
+  LoadCommandDataError,
+  LoadEventDataError,
+  LoadSettingsDataError,
+
+  InitActionModError,
+  InitEventModError,
+  InitExtensionModError,
+
+  MissingActionMod,
+  MissingEventMod,
+  MissingExtensionMod,
+
+  DuplicateSlashCommand,
+  DuplicateUserContextMenuCommand,
+  DuplicateMessageContextMenuCommand,
+  DuplicateTextCommand,
 }

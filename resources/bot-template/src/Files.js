@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { ErrorType } from "./enums/ErrorType.js";
 export class Files {
     dbc;
     commandsDir;
@@ -46,7 +47,7 @@ export class Files {
                 this.data.commands.push(data);
             }
             catch (err) {
-                console.error("Błąd podczas ładowania danych komendy");
+                this.dbc.printError(ErrorType.LoadCommandDataError, err);
             }
         }
     }
@@ -60,7 +61,7 @@ export class Files {
                 this.data.events.push(data);
             }
             catch (err) {
-                console.error("Błąd podczas ładowania danych eventu");
+                this.dbc.printError(ErrorType.LoadEventDataError, err);
             }
         }
     }
@@ -71,7 +72,7 @@ export class Files {
             this.data.settings = data;
         }
         catch (err) {
-            console.error("Błąd podczas ładowania danych ustawień");
+            this.dbc.printError(ErrorType.LoadSettingsDataError, err);
         }
     }
     async initMods() {
@@ -82,34 +83,49 @@ export class Files {
     async initActionMods() {
         const files = await fs.readdir(this.dbc.actions.dir);
         for (const file of files) {
-            const filePath = path.join(this.dbc.actions.dir, file);
-            const modPath = pathToFileURL(filePath).href;
-            const action = (await import(modPath)).default;
-            this.dbc.actions.mods.set(action.name, action);
-            if (action.mod) {
-                action.mod(this.dbc);
+            try {
+                const filePath = path.join(this.dbc.actions.dir, file);
+                const modPath = pathToFileURL(filePath).href;
+                const action = (await import(modPath)).default;
+                this.dbc.actions.mods.set(action.name, action);
+                if (action.mod) {
+                    action.mod(this.dbc);
+                }
+            }
+            catch (err) {
+                this.dbc.printError(ErrorType.InitActionModError, err);
             }
         }
     }
     async initEventMods() {
         const files = await fs.readdir(this.dbc.events.dir);
         for (const file of files) {
-            const filePath = path.join(this.dbc.events.dir, file);
-            const modPath = pathToFileURL(filePath).href;
-            const event = (await import(modPath)).default;
-            this.dbc.events.mods.set(event.name, event);
-            if (event.mod) {
-                event.mod(this.dbc);
+            try {
+                const filePath = path.join(this.dbc.events.dir, file);
+                const modPath = pathToFileURL(filePath).href;
+                const event = (await import(modPath)).default;
+                this.dbc.events.mods.set(event.name, event);
+                if (event.mod) {
+                    event.mod(this.dbc);
+                }
+            }
+            catch (err) {
+                this.dbc.printError(ErrorType.InitEventModError, err);
             }
         }
     }
     async initExtensionMods() {
         const files = await fs.readdir(this.dbc.extensions.dir);
         for (const file of files) {
-            const filePath = path.join(this.dbc.extensions.dir, file);
-            const modPath = pathToFileURL(filePath).href;
-            const extension = (await import(modPath)).default;
-            this.dbc.extensions.mods.set(extension.name, extension);
+            try {
+                const filePath = path.join(this.dbc.extensions.dir, file);
+                const modPath = pathToFileURL(filePath).href;
+                const extension = (await import(modPath)).default;
+                this.dbc.extensions.mods.set(extension.name, extension);
+            }
+            catch (err) {
+                this.dbc.printError(ErrorType.InitExtensionModError, err);
+            }
         }
     }
 }

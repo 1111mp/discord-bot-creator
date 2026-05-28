@@ -1,3 +1,4 @@
+import type { ModName } from "./../types/ModName.js";
 import type { ModMeta } from "./../../src/interfaces/ModMeta.js";
 import type { ModDependencies } from "./../../src/types/ModDependencies.js";
 import type { DBC } from "./../../src/DBC.js";
@@ -6,7 +7,7 @@ export interface Extension {
   /**
    * Extension Name
    */
-  name: string;
+  name: ModName;
   /**
    * Extension Meta Data
    */

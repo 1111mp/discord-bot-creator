@@ -1,3 +1,4 @@
+import type { ModName } from "./../types/ModName.js";
 import type { ModMeta } from "./ModMeta.js";
 import type { DBC } from "./../DBC.js";
 import type { ModDependencies } from "./../types/ModDependencies.js";
@@ -6,7 +7,7 @@ export interface Event {
   /**
    * Event Name
    */
-  name: string;
+  name: ModName;
   /**
    * Event Description
    *

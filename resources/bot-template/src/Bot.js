@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { CommandType } from "./enums/CommandType.js";
+import { ErrorType } from "./enums/ErrorType.js";
 export class Bot {
     dbc;
     $slash;
@@ -23,7 +24,7 @@ export class Bot {
         this.$userContextMenu = new Map();
         this.$messageContextMenu = new Map();
         this.$text = new Map();
-        this.$events = [];
+        this.$events = new Map();
         this.applicationCommandData = [];
         this.client = null;
         this.PrivilegedIntents =
@@ -91,7 +92,7 @@ export class Bot {
                 switch (command.type) {
                     case CommandType.Slash:
                         if (this.$slash.has(command.name)) {
-                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                            this.dbc.printError(ErrorType.DuplicateSlashCommand, command.name);
                         }
                         else {
                             this.$slash.set(command.name, command);
@@ -99,7 +100,7 @@ export class Bot {
                         break;
                     case CommandType.UserContextMenu:
                         if (this.$userContextMenu.has(command.name)) {
-                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                            this.dbc.printError(ErrorType.DuplicateUserContextMenuCommand, command.name);
                         }
                         else {
                             this.$userContextMenu.set(command.name, command);
@@ -107,7 +108,7 @@ export class Bot {
                         break;
                     case CommandType.MessageContextMenu:
                         if (this.$messageContextMenu.has(command.name)) {
-                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                            this.dbc.printError(ErrorType.DuplicateMessageContextMenuCommand, command.name);
                         }
                         else {
                             this.$messageContextMenu.set(command.name, command);
@@ -115,7 +116,7 @@ export class Bot {
                         break;
                     case CommandType.Text:
                         if (this.$text.has(command.name)) {
-                            console.warn("Zduplikowana komenda! Zostanie użyta pierwsza z listy.");
+                            this.dbc.printError(ErrorType.DuplicateTextCommand, command.name);
                         }
                         else {
                             this.$text.set(command.name, command);
