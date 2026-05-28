@@ -113,18 +113,22 @@ async function main() {
  */
 async function extractZipWindows(zipPath, targetDir, expectedSubDir) {
   const zip = new AdmZip(zipPath);
-  const tempExtractPath = path.join(path.dirname(targetDir), 'tmp_unzip');
 
-  // Extract everything to a temporary directory first
-  zip.extractAllTo(tempExtractPath, true);
+  zip.extractAllTo(targetDir, true);
 
-  // The official zip wraps files inside a root folder (e.g., "node-v20.11.0-win-x64")
-  // We move its contents directly to our target output directory
-  const innerPath = path.join(tempExtractPath, expectedSubDir);
-  fs.renameSync(innerPath, targetDir);
+  const extractedRoot = path.join(targetDir, expectedSubDir);
 
-  // Clean up the temporary unzip folder
-  fs.rmSync(tempExtractPath, { recursive: true, force: true });
+  for (const file of fs.readdirSync(extractedRoot)) {
+    fs.renameSync(
+      path.join(extractedRoot, file),
+      path.join(targetDir, file),
+    );
+  }
+
+  fs.rmSync(extractedRoot, {
+    recursive: true,
+    force: true,
+  });
 }
 
 /**
