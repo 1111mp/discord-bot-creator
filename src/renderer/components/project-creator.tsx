@@ -59,7 +59,7 @@ export function ProjectCreator() {
       setOpen(false);
       form.reset();
 
-      navigate(`/projects/${id}`);
+      void navigate(`/projects/${id}`);
     } catch (error) {
       toast.error(error?.message || 'Failed to create project');
     } finally {

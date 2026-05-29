@@ -7,7 +7,7 @@ import {
   Sun,
   SunMoon,
 } from 'lucide-react';
-import { useLoaderData, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { ProjectCreator } from '@/components';
 import {
@@ -37,10 +37,11 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from '@/components/ui';
+import { useProjectStore } from '@/stores';
 
 function WelcomePage() {
   const navigate = useNavigate();
-  const { projects = [] } = useLoaderData<{ projects: DBC.IProject[] }>();
+  const projects = useProjectStore((s) => s.projects);
 
   const hasProjects = projects.length > 0;
 
@@ -129,7 +130,7 @@ function WelcomePage() {
                             key={id}
                             className='py-1.5'
                             onClick={() => {
-                              navigate(`/projects/${id}`);
+                              void navigate(`/projects/${id}/dashboard`);
                             }}
                           >
                             {name}

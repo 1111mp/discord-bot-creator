@@ -11,10 +11,10 @@ import {
   SquareTerminal,
 } from 'lucide-react';
 
-import { DeviceSwitcher } from '@/components/device-switcher';
 import { NavMain } from '@/components/nav-main';
 import { NavProjects } from '@/components/nav-projects';
 import { NavUser } from '@/components/nav-user';
+import { ProjectSwitcher } from '@/components/project-switcher';
 import {
   Sidebar,
   SidebarContent,
@@ -157,7 +157,7 @@ function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader className='pt-7 region-drag'>
-        <DeviceSwitcher devices={data.devices} />
+        <ProjectSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

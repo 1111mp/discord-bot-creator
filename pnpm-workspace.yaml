@@ -1,6 +1,7 @@
 allowBuilds:
   electron-winstaller: true
+  esbuild: false
   msw: false
 nodeLinker: hoisted
 overrides:
-  yauzl: '^3.3.1'
+  yauzl: "^3.3.1"

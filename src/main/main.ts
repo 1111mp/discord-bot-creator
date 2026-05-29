@@ -13,7 +13,24 @@ if (started) {
   app.quit();
 }
 
-const createWindow = () => {
+const installExtensions = async () => {
+  const installer = require('electron-devtools-installer');
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  const extensions = ['REACT_DEVELOPER_TOOLS'];
+
+  return installer
+    .default(
+      extensions.map((name) => installer[name]),
+      forceDownload,
+    )
+    .catch(console.log);
+};
+
+const createWindow = async () => {
+  if (isDebug) {
+    await installExtensions();
+  }
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1080,
@@ -54,7 +71,7 @@ void app.whenReady().then(async () => {
 
   registerIpcServices();
 
-  createWindow();
+  await createWindow();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -70,7 +87,7 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    void createWindow();
   }
 });
 

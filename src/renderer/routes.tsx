@@ -7,21 +7,27 @@ export const router = createMemoryRouter(
   [
     {
       path: '/',
+      loader: async () => {
+        const projects = await window.electron.ipcService.project.getAll();
+        return {
+          projects,
+        };
+      },
       Component: HomePage,
       children: [
         {
           path: 'welcome',
-          loader: async () => {
-            const projects = await window.electron.ipcService.project.getAll();
-            return {
-              projects,
-            };
-          },
           Component: WelcomePage,
         },
         {
           path: 'projects/:projectId',
           lazy: () => import('@/pages/projects'),
+          children: [
+            {
+              path: 'dashboard',
+              lazy: () => import('@/pages/projects/dashboard'),
+            },
+          ],
         },
       ],
     },
