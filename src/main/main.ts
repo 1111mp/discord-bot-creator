@@ -3,6 +3,7 @@ import started from 'electron-squirrel-startup';
 import path from 'node:path';
 
 import { init_app } from './init';
+import { botManager } from './runtime/bot-manager';
 import { registerIpcServices } from './services';
 
 const isDebug =
@@ -56,6 +57,8 @@ const createWindow = async () => {
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
     );
   }
+
+  botManager.addWindow(mainWindow);
 
   // Open the DevTools.
   if (isDebug) {

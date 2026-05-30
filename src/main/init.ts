@@ -3,7 +3,7 @@ import { ensureDir, pathExists } from 'fs-extra';
 import { DEFAULT_DBC_CONFIG } from './data/dbc';
 import { DEFAULT_PROJECTS_DATA, iProject } from './data/project';
 import { appHomeDir, dbcConfigPath, projectsPath } from './lib/dirs';
-import { save_yaml } from './lib/helper';
+import { saveYaml } from './lib/helper';
 
 async function init_config() {
   try {
@@ -24,7 +24,7 @@ async function init_config() {
     await Promise.all(
       tasks.map(async ({ path, data, comment }) => {
         if (!(await pathExists(path))) {
-          await save_yaml(path, data, comment);
+          await saveYaml(path, data, comment);
         }
       }),
     );

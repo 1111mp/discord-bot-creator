@@ -1,4 +1,6 @@
+export * from './alert';
 export * from './avatar';
+export * from './breadcrumb';
 export * from './button';
 export * from './button-group';
 export * from './card';

@@ -22,10 +22,15 @@ export const router = createMemoryRouter(
         {
           path: 'projects/:projectId',
           lazy: () => import('@/pages/projects'),
+          handle: {
+            breadcrumb: (_data: unknown, params: { projectId: string }) =>
+              params.projectId,
+          },
           children: [
             {
               path: 'dashboard',
               lazy: () => import('@/pages/projects/dashboard'),
+              handle: { breadcrumb: 'Dashboard' },
             },
           ],
         },

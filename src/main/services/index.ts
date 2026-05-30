@@ -1,11 +1,13 @@
 import { ipcMain } from 'electron';
 
+import { botProjectService } from './bot-project.service';
 import { dialogService } from './dialog.service';
 import { projectService } from './project.service';
 
 const services: IMainIpcServices = {
   dialog: dialogService,
   project: projectService,
+  botProject: botProjectService,
 };
 
 export function registerIpcServices() {

@@ -71,7 +71,7 @@ function ProjectSwitcher() {
                 key={project.id}
                 onClick={() => {
                   if (projectId === project.id) return;
-                  void navigate(`/projects/${project.id}`);
+                  void navigate(`/projects/${project.id}/dashboard`);
                 }}
                 className='gap-2 p-2'
               >

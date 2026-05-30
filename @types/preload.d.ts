@@ -1,5 +1,9 @@
 interface Window {
   electron: {
-    ipcService: IMainIpcServices;
+    ipcService: IMainIpcServices & {
+      botProject: {
+        onRuntimeInfo: (fn: OnRuntimeInfo) => () => void;
+      };
+    };
   };
 }

@@ -4,7 +4,7 @@ import { getNpmPath, getParsedEnv } from './node-path';
 
 export async function installDeps(path: string) {
   return new Promise<void>((resolve, reject) => {
-    const proc = spawn(getNpmPath(), ['run', 'install'], {
+    const proc = spawn(getNpmPath(), ['install'], {
       cwd: path,
       shell: true,
       env: getParsedEnv(),

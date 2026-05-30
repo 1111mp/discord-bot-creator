@@ -1,5 +1,5 @@
 import { dbcConfigPath } from '../lib/dirs';
-import { read_yaml, save_yaml } from '../lib/helper';
+import { readYaml, saveYaml } from '../lib/helper';
 
 export const DEFAULT_DBC_CONFIG = {
   locale: 'en',
@@ -15,14 +15,14 @@ class DBCConfig {
   async load() {
     try {
       const dbcPath = dbcConfigPath();
-      this.data = await read_yaml<DBC.Data>(dbcPath);
+      this.data = await readYaml<DBC.Data>(dbcPath);
     } catch {
       // Handle error, maybe log it or set a default value
     }
   }
 
   private async save() {
-    await save_yaml(
+    await saveYaml(
       dbcConfigPath(),
       this.data,
       '# Discord Bot Creator Config File',

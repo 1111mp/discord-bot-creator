@@ -49,3 +49,7 @@ export function botTemplatePath() {
 export function libNodePath() {
   return join(resourcesPath(), 'lib', 'node');
 }
+
+export function botProjectSettingPath(basePath: string) {
+  return join(basePath, 'data', 'settings.json');
+}

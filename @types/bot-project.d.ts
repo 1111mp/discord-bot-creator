@@ -1,7 +1,8 @@
 namespace DBC {
   namespace BotProject {
     interface Setting {
-      id: string; // DBC.IProject.id
+      id?: string; // DBC.IProject.id
+      depsInstalled?: boolean; // default `false`
 
       prefix: string; // default '!'
       token: string;

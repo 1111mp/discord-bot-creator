@@ -1,5 +1,5 @@
 import { projectsPath } from '../lib/dirs';
-import { read_yaml, save_yaml } from '../lib/helper';
+import { readYaml, saveYaml } from '../lib/helper';
 
 export const DEFAULT_PROJECTS_DATA = {
   projects: [],
@@ -23,7 +23,7 @@ class IProject {
   async load() {
     try {
       const path = projectsPath();
-      this.data = await read_yaml<IProjectData>(path);
+      this.data = await readYaml<IProjectData>(path);
     } catch {
       // Handle error, maybe log it or set a default value
     }
@@ -35,7 +35,7 @@ class IProject {
   }
 
   private async save() {
-    await save_yaml(
+    await saveYaml(
       projectsPath(),
       this.data,
       '# Discord Bot Creator Projects Config File',

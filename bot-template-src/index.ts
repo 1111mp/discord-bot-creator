@@ -1,5 +1,11 @@
 import { DBC } from './src/DBC.js';
 
-const dbc = new DBC();
+async function main() {
+  const dbc = new DBC();
 
-await dbc.files.startBot();
+  await dbc.files.startBot();
+
+  console.log('Bot started');
+}
+
+main();
